@@ -12,8 +12,8 @@ import {
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { Rings } from 'react-loader-spinner';
 import { theme } from './../index';
 
 export default function Film(): React.ReactElement {
@@ -53,6 +53,29 @@ export default function Film(): React.ReactElement {
               </Toolbar>
             </AppBar>
             <main>
+              {isLoading && (
+                <Box sx={{ textAlign: 'center' }}>
+                  <Rings
+                    height="80"
+                    width="80"
+                    color="#5f70f1"
+                    radius="6"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                    ariaLabel="rings-loading"
+                  />
+                </Box>
+              )}
+              {error && (
+                <Typography
+                  variant="h3"
+                  color={'red'}
+                  sx={{ textAlign: 'center' }}
+                >
+                  Something wrong. Please try again
+                </Typography>
+              )}
               <Container sx={{ py: 8 }} maxWidth="md">
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6} md={4}>

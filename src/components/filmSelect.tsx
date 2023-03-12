@@ -37,7 +37,7 @@ export default function FilmSelect(): React.ReactElement {
       <Box sx={{ display: 'flex', gap: '30px' }}>
         <TextField
           id="outlined-basic"
-          label="Outlined"
+          label="Film name"
           variant="outlined"
           value={filmName}
           onChange={handleChange}

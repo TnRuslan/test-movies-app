@@ -1,23 +1,16 @@
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {
+  AppBar,
+  Button,
+  CssBaseline,
+  Grid,
+  Box,
+  Toolbar,
+  Typography,
+  Container,
+} from '@mui/material/';
+import { ThemeProvider } from '@mui/material/styles';
 import Head from 'next/head';
-import FilmSelect from '@/src/components/filmSelect';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { Skeleton } from '@mui/material';
 import { theme } from './../index';
 import { useAppSelector } from '@/src/hooks/hooks';
 import FilmCard from '@/src/components/card';
@@ -55,18 +48,13 @@ export default function FavoriteFilms(): React.ReactElement {
               </Grid>
             </Container>
           ) : (
-            <h1></h1>
+            <Typography
+              variant="h3"
+              sx={{ textAlign: 'center', marginTop: '100px' }}
+            >
+              You haven't added anything to your favorites yet
+            </Typography>
           )}
-
-          {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Stack spacing={2}>
-                <Pagination
-                  count={pageQuantity}
-                  page={page}
-                  onChange={handlePagination}
-                />
-              </Stack>
-            </Box> */}
         </main>
 
         {/* Footer */}

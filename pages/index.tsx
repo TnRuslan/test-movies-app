@@ -37,8 +37,6 @@ export default function Album() {
     isLoading,
   } = filmAPI.useGetFilmsByTitleQuery({ searchName, page });
 
-  console.log(isLoading);
-
   const handlePagination = (
     event: React.ChangeEvent<unknown>,
     value: number
@@ -72,16 +70,18 @@ export default function Album() {
         <main>
           <FilmSelect />
           {isLoading && (
-            <Rings
-              height="80"
-              width="80"
-              color="#5f70f1"
-              radius="6"
-              wrapperStyle={{}}
-              wrapperClass=""
-              visible={true}
-              ariaLabel="rings-loading"
-            />
+            <Box sx={{ textAlign: 'center' }}>
+              <Rings
+                height="80"
+                width="80"
+                color="#5f70f1"
+                radius="6"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+                ariaLabel="rings-loading"
+              />
+            </Box>
           )}
           {error && (
             <Typography variant="h3" color={'red'} sx={{ textAlign: 'center' }}>
@@ -111,7 +111,7 @@ export default function Album() {
             </Typography>
           )}
 
-          {pageQuantity > 0 && (
+          {pageQuantity > 1 && (
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <Stack spacing={2}>
                 <Pagination
