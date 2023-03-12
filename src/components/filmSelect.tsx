@@ -2,18 +2,22 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { Button, TextField } from '@mui/material';
-import { setSearchName } from '../redux/filmSlice';
-import { useAppDispatch, useAppSelector } from '../hooks/hooks';
+import { useAppDispatch } from '../hooks/hooks';
 import { filmsSlice } from '../redux/filmSlice';
 
 export default function FilmSelect(): React.ReactElement {
   const { setSearchName } = filmsSlice.actions;
-  const searchName = useAppSelector(state => state.filmsReducer.searchName);
+
+  const [filmName, setFilmName] = useState('');
 
   const dispatch = useAppDispatch();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSearchName(event.target.value));
+    setFilmName(event.target.value);
+  };
+
+  const handleSearch = () => {
+    dispatch(setSearchName(filmName));
   };
 
   return (
@@ -30,14 +34,22 @@ export default function FilmSelect(): React.ReactElement {
       <Typography variant="h3" gutterBottom>
         Start entering film name
       </Typography>
-
-      <TextField
-        id="outlined-basic"
-        label="Outlined"
-        variant="outlined"
-        value={searchName}
-        onChange={handleChange}
-      />
+      <Box sx={{ display: 'flex', gap: '30px' }}>
+        <TextField
+          id="outlined-basic"
+          label="Outlined"
+          variant="outlined"
+          value={filmName}
+          onChange={handleChange}
+        />
+        <Button
+          variant="contained"
+          sx={{ width: '150px' }}
+          onClick={handleSearch}
+        >
+          Search
+        </Button>
+      </Box>
     </Box>
   );
 }

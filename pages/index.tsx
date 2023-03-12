@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -14,13 +10,19 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Head from 'next/head';
 import FilmSelect from '@/src/components/filmSelect';
-import { useAppSelector } from '@/src/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '@/src/hooks/hooks';
 import { filmAPI } from '@/src/services/filmService';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Skeleton } from '@mui/material';
+import { Card, Skeleton } from '@mui/material';
+import { IFilm } from '../src/hooks/models/IModel';
+import FilmCard from '../src/components/card';
+import { Rings } from 'react-loader-spinner';
+
+const NOT_FOUND_MESSAGE = 'Movie not found!';
+const MANY_RESULTS_WESSAGE = 'Too many results.';
 
 export const theme = createTheme();
 
@@ -34,6 +36,8 @@ export default function Album() {
     error,
     isLoading,
   } = filmAPI.useGetFilmsByTitleQuery({ searchName, page });
+
+  console.log(isLoading);
 
   const handlePagination = (
     event: React.ChangeEvent<unknown>,
@@ -54,58 +58,57 @@ export default function Album() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <AppBar position="relative">
-          <Toolbar>
+          <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography variant="h6" color="inherit" noWrap>
               Search films by name
             </Typography>
+            <Link href={'/favorite/favorite'}>
+              <Button variant="contained" color="secondary">
+                Your favorite films
+              </Button>
+            </Link>
           </Toolbar>
         </AppBar>
         <main>
           <FilmSelect />
-          {isLoading && <h1>Loading...</h1>}
-          {error && <h1> Erorr</h1>}
+          {isLoading && (
+            <Rings
+              height="80"
+              width="80"
+              color="#5f70f1"
+              radius="6"
+              wrapperStyle={{}}
+              wrapperClass=""
+              visible={true}
+              ariaLabel="rings-loading"
+            />
+          )}
+          {error && (
+            <Typography variant="h3" color={'red'} sx={{ textAlign: 'center' }}>
+              Something wrong. Please try again
+            </Typography>
+          )}
 
-          {films?.Search ? (
+          {films?.Search && (
             <Container sx={{ py: 8 }} maxWidth="md">
               <Grid container spacing={4}>
                 {films?.Search.map(film => (
-                  <Grid item key={film.imdbID} xs={12} sm={6} md={4}>
-                    <Card
-                      sx={{
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                      }}
-                    >
-                      {film.Poster !== 'N/A' ? (
-                        <CardMedia
-                          component="img"
-                          image={film.Poster}
-                          alt="random"
-                        />
-                      ) : (
-                        <Skeleton animation={false} height={400} />
-                      )}
-
-                      <CardContent sx={{ flexGrow: 1 }}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          {film.Title}
-                        </Typography>
-                        <Typography>{film.Year}</Typography>
-                      </CardContent>
-
-                      <CardActions>
-                        <Button size="small">
-                          <Link href={`/film/${film.imdbID}`}> to film</Link>
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </Grid>
+                  <FilmCard key={film.imdbID} film={film}></FilmCard>
                 ))}
               </Grid>
             </Container>
-          ) : (
-            <h1></h1>
+          )}
+
+          {films?.Error === NOT_FOUND_MESSAGE && (
+            <Typography variant="h3" sx={{ textAlign: 'center' }}>
+              The film was not found. Please enter another name.
+            </Typography>
+          )}
+
+          {films?.Error === MANY_RESULTS_WESSAGE && (
+            <Typography variant="h3" sx={{ textAlign: 'center' }}>
+              Please enter the full name of a film.
+            </Typography>
           )}
 
           {pageQuantity > 0 && (

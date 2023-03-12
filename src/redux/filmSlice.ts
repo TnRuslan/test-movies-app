@@ -19,6 +19,18 @@ export const filmsSlice = createSlice({
     setSearchName(state, action: PayloadAction<string>) {
       state.searchName = action.payload;
     },
+    addFavoriteFilm(state, action: PayloadAction<IFilm>) {
+      state.favoriteFilams.push(action.payload);
+    },
+    removeFromFavorite(state, action: PayloadAction<string>) {
+      const index = state.favoriteFilams.findIndex(
+        film => film.imdbID === action.payload
+      );
+      if (index === -1) {
+        return;
+      }
+      state.favoriteFilams.splice(index, 1);
+    },
   },
 });
 

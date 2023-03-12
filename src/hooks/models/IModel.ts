@@ -1,11 +1,12 @@
 export interface IFilms {
-  Response: boolean;
+  Response: string;
   Search: Array<IFilm>;
   totalResults: number | null;
+  Error: string;
 }
 
 export interface IFilm {
-  imdbID: number;
+  imdbID: string;
   Title: string;
   Poster: string;
   Type: string;

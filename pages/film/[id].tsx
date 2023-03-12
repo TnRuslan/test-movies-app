@@ -2,6 +2,7 @@ import { filmAPI } from '@/src/services/filmService';
 import {
   AppBar,
   Box,
+  Button,
   CardMedia,
   Container,
   Grid,
@@ -11,20 +12,18 @@ import {
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { theme } from './../index';
 
 export default function Film(): React.ReactElement {
-  const { query } = useRouter();
-  console.log(query.id);
+  const { query, back } = useRouter();
 
   const {
     data: film,
     error,
     isLoading,
   } = filmAPI.useGetFilmByIdQuery(query.id);
-
-  console.log(film);
 
   return (
     <>
@@ -36,10 +35,21 @@ export default function Film(): React.ReactElement {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <AppBar position="relative">
-              <Toolbar>
+              <Toolbar
+                sx={{ display: 'flex', justifyContent: 'space-between' }}
+              >
                 <Typography variant="h6" color="inherit" noWrap>
                   {film?.Title}
                 </Typography>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => {
+                    back();
+                  }}
+                >
+                  Back
+                </Button>
               </Toolbar>
             </AppBar>
             <main>
@@ -53,11 +63,19 @@ export default function Film(): React.ReactElement {
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
-                    <Typography>Actors: {film.Actors}</Typography>
-                    <Typography>Director: {film.Director}</Typography>
-                    <Typography>Genre: {film.Genre}</Typography>
-                    <Typography>IMDB Rating: {film.imdbRating}</Typography>
-                    <Typography>Released: {film.Released}</Typography>
+                    <Typography color={'black'}>
+                      Actors: {film.Actors}
+                    </Typography>
+                    <Typography color={'black'}>
+                      Director: {film.Director}
+                    </Typography>
+                    <Typography color={'black'}>Genre: {film.Genre}</Typography>
+                    <Typography color={'black'}>
+                      IMDB Rating: {film.imdbRating}
+                    </Typography>
+                    <Typography color={'black'}>
+                      Released: {film.Released}
+                    </Typography>
                   </Grid>
                 </Grid>
               </Container>
