@@ -18,3 +18,7 @@ result.
 
 You can find some films and look detail information about it, and also you can
 add a movie to your favorite
+
+In the project used redux-toolkit, with RTK-Query.
+Components from Material Ui are used for styling.
+
