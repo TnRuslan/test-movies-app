@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { IFilm } from '../hooks/models/IModel';
 import { filmsSlice } from '../redux/filmSlice';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface Props {
   film: IFilm;
@@ -48,9 +48,23 @@ export default function FilmCard(props: Props): React.ReactElement {
     setIsFavoriteFilm(true);
   };
 
+  const favorite = useCallback(
+    (id: string) => {
+      const index = favoriteFilms.findIndex(f => f.imdbID === id);
+      if (index === -1) {
+        setIsFavoriteFilm(false);
+        return;
+      }
+      setIsFavoriteFilm(true);
+    },
+    [favoriteFilms]
+  );
+
+  // console.log(favorite(film.imdbID));
+
   useEffect(() => {
-    isFavorite(film.imdbID);
-  }, [favoriteFilms]);
+    favorite(film.imdbID);
+  }, [favorite, film.imdbID]);
 
   return (
     <Grid item key={film.imdbID} xs={12} sm={6} md={4}>
@@ -98,7 +112,7 @@ export default function FilmCard(props: Props): React.ReactElement {
             </Button>
           )}
 
-          <Button variant="outlined" size="small">
+          <Button variant="contained" size="small">
             <Link href={`/film/${film.imdbID}`}>View more</Link>
           </Button>
         </CardActions>

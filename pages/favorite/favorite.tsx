@@ -52,7 +52,7 @@ export default function FavoriteFilms(): React.ReactElement {
               variant="h3"
               sx={{ textAlign: 'center', marginTop: '100px' }}
             >
-              You haven't added anything to your favorites yet
+              You have not added anything to your favorites yet
             </Typography>
           )}
         </main>
